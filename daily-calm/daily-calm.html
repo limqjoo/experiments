@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +18,8 @@
             align-items: center;
             justify-content: center;
         }
-        body > div {
+
+        body>div {
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -25,33 +27,40 @@
             justify-content: start;
             height: 100vh;
         }
+
         .onest-300 {
             font-weight: 300;
             font-style: normal;
         }
+
         .onest-500 {
             font-weight: 500;
             font-style: normal;
         }
+
         .leftPanel {
             margin: 80px;
         }
+
         .promptDisplay {
             display: flex;
             flex-direction: row;
             width: 100%;
         }
+
         div#promptDisplay {
             font-size: 2em;
             margin: 80px 0;
             max-width: 80%;
         }
+
         .buttonWrapper {
             display: flex;
             align-items: center;
             justify-content: center;
             margin-left: 20px;
         }
+
         button {
             font-family: "Onest", sans-serif;
             padding: 10px;
@@ -61,12 +70,14 @@
             border: 1px solid #f4f4f4;
             border-radius: 8px;
         }
+
         form {
             display: flex;
             flex-direction: column;
             width: 100%;
             height: 100%;
         }
+
         textarea {
             display: flex;
             font-family: "Onest", sans-serif;
@@ -80,6 +91,7 @@
         }
     </style>
 </head>
+
 <body class="onest-300">
     <div class="leftPanel">
         <h1 class="onest-500" style="opacity: .7;">Daily Calm</h1>
@@ -91,79 +103,81 @@
     <div>
         <form>
             <textarea id="writingArea" rows="10" cols="100" placeholder="Start writing here..."></textarea><br>
-            <button id="sendBtn" type="submit" onsubmit="this.submit(); this.reset(); return false;">Send to Nowhere</button>
+            <button id="sendBtn" type="submit" onsubmit="this.submit(); this.reset(); return false;">Send to
+                Nowhere</button>
         </form>
     </div>
 </body>
-</html>    
+
+</html>
 <script>
-        const morningPrompts = [
+    const morningPrompts = [
+        `What are you grateful for today?`,
+        `How do you want to feel today?`,
+        `What is one goal you have for the day?`,
+        `What are your top priorities for today?`,
+        `What small things can you do to make today amazing?`,
+        `Set an intention for the day in one sentence.`,
+        `Describe how you want to show up for yourself and others today.`,
+        `What is one small act of kindness you can do for yourself today?`
+    ];
+
+    const afternoonPrompts = [
+        `Describe one object within arm’s reach using only sensory details: shape, texture, temperature, weight.`,
+        `Write five sentences that each begin with 'Right now, I notice…'.`,
+        `List three things your body is doing without effort (breathing, heartbeat, balance) and describe each for one line.`,
+        `With each exhale, write one short phrase about something you’re releasing.Stop when you feel a shift.`,
+        `Write a paragraph in which each sentence is no longer than one breath.Let your breathing set the pace.`,
+        `Write a “two - minute worry box”: jot every concern, no analysis, then close the page with one final line: “This can wait.”`,
+        `Write a dialogue between two parts of yourself: one overwhelmed, one steady. Keep it brief and neutral.`,
+        `Describe a peaceful place you can visit in your mind when you need calm. Include sensory details.`,
+        `Write a list titled “What’s enough for today?” and cap it at five items.`
+    ];
+
+    const eveningPrompts = [
+        `Write a short letter to yourself offering kindness and understanding for any challenges faced so far today.`,
+        `One thing that went well. One thing that was hard. One thing you can set down until tomorrow.`,
+        `Describe a moment from today when you felt at peace, no matter how brief.`,
+        `List three things you accomplished today, no matter how small.`,
+        `Describe the moment today when you first felt tired and what your body was telling you.`,
+        `Recall a moment you felt even slightly supported, eased, or relieved.`,
+        `Identify one worry that does not need attention until tomorrow.`,
+        `Write a gentle instruction to your body about how you want to end the night.`,
+        `List three things you are looking forward to tomorrow.`
             `What are you grateful for today?`,
-            `How do you want to feel today?`,
-            `What is one goal you have for the day?`,
-            `What are your top priorities for today?`,
-            `What small things can you do to make today amazing?`,
-            `Set an intention for the day in one sentence.`,
-            `Describe how you want to show up for yourself and others today.`,
-            `What is one small act of kindness you can do for yourself today?`
-        ];
+    ];
 
-        const afternoonPrompts = [
-            `Describe one object within arm’s reach using only sensory details: shape, texture, temperature, weight.`,
-            `Write five sentences that each begin with 'Right now, I notice…'.`,
-            `List three things your body is doing without effort (breathing, heartbeat, balance) and describe each for one line.`,
-            `With each exhale, write one short phrase about something you’re releasing.Stop when you feel a shift.`,
-            `Write a paragraph in which each sentence is no longer than one breath.Let your breathing set the pace.`,
-            `Write a “two - minute worry box”: jot every concern, no analysis, then close the page with one final line: “This can wait.”`,
-            `Write a dialogue between two parts of yourself: one overwhelmed, one steady. Keep it brief and neutral.`,
-            `Describe a peaceful place you can visit in your mind when you need calm. Include sensory details.`,
-            `Write a list titled “What’s enough for today?” and cap it at five items.`
-        ];
-
-        const eveningPrompts = [
-            `Write a short letter to yourself offering kindness and understanding for any challenges faced so far today.`,
-            `One thing that went well. One thing that was hard. One thing you can set down until tomorrow.`,
-            `Describe a moment from today when you felt at peace, no matter how brief.`,
-            `List three things you accomplished today, no matter how small.`,
-            `Describe the moment today when you first felt tired and what your body was telling you.`,
-            `Recall a moment you felt even slightly supported, eased, or relieved.`,
-            `Identify one worry that does not need attention until tomorrow.`,
-            `Write a gentle instruction to your body about how you want to end the night.`,
-            `List three things you are looking forward to tomorrow.`
-            `What are you grateful for today?`,
-        ];
-
-        function getCurrentTimePeriod() {
-            const hour = new Date().getHours();
-            if (hour >= 5 && hour < 12) {
-                return 'morning';
-            } else if (hour >= 12 && hour < 17) {
-                return 'afternoon';
-            } else {
-                return 'evening';
-            }
+    function getCurrentTimePeriod() {
+        const hour = new Date().getHours();
+        if (hour >= 5 && hour < 12) {
+            return 'morning';
+        } else if (hour >= 12 && hour < 17) {
+            return 'afternoon';
+        } else {
+            return 'evening';
         }
+    }
 
-        function getRandomPrompt(prompts) {
-            const randomIndex = Math.floor(Math.random() * prompts.length);
-            return prompts[randomIndex];
+    function getRandomPrompt(prompts) {
+        const randomIndex = Math.floor(Math.random() * prompts.length);
+        return prompts[randomIndex];
+    }
+
+    function displayPrompt() {
+        const timePeriod = getCurrentTimePeriod();
+        let prompt;
+        if (timePeriod === 'morning') {
+            prompt = getRandomPrompt(morningPrompts);
+        } else if (timePeriod === 'afternoon') {
+            prompt = getRandomPrompt(afternoonPrompts);
+        } else {
+            prompt = getRandomPrompt(eveningPrompts);
         }
+        document.getElementById('promptDisplay').innerText = prompt;
+    }
 
-        function displayPrompt() {
-            const timePeriod = getCurrentTimePeriod();
-            let prompt;
-            if (timePeriod === 'morning') {
-                prompt = getRandomPrompt(morningPrompts);
-            } else if (timePeriod === 'afternoon') {
-                prompt = getRandomPrompt(afternoonPrompts);
-            } else {
-                prompt = getRandomPrompt(eveningPrompts);
-            }
-            document.getElementById('promptDisplay').innerText = prompt;
-        }
+    document.getElementById('newPromptBtn').addEventListener('click', displayPrompt);
 
-        document.getElementById('newPromptBtn').addEventListener('click', displayPrompt);
-
-        // Display an initial prompt on page load
-        displayPrompt();
+    // Display an initial prompt on page load
+    displayPrompt();
 </script>
